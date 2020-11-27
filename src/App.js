@@ -1,13 +1,49 @@
-import { graphql } from "react-apollo";
+import { useQuery } from "react-apollo";
 import gql from "graphql-tag";
 
 import "./App.css";
 import "bulma/css/bulma.css";
 import Header from "./components/Header";
-import params from "./data/params";
+import Score from "./components/Score";
+import DataTable from "./components/DataTable";
+import {useState } from "react";
 
-function App(props) {
-  console.log(props.data.repository);
+function App() {
+  const [url, setUrl] = useState('')
+  const [ownerText, setOwnerText] = useState('')
+  const [repoText, setRepoText] = useState('')
+
+  const response = useQuery(queries, {
+    variables: {
+      owner: ownerText,
+      repo: repoText
+    },
+  })
+
+  const handleChangeInput = (e) => {
+    const newUrl = e.target.value
+    setUrl(newUrl)
+  }
+
+  const runAudit = () => {
+    const params = url.split('/')
+    const githubUrlIdx = params.indexOf('github.com')
+    
+    let owner = ''
+    let repo = ''
+
+    if (githubUrlIdx && params.length + 1 > githubUrlIdx) {
+      owner = params[githubUrlIdx + 1]
+      repo = params[githubUrlIdx + 2]
+    }
+
+    if(!!owner && !!repo) {
+      setOwnerText(owner)
+      setRepoText(repo)
+    }
+  }
+
+  const responseData = response?.data?.repository || null
 
   return (
     <div>
@@ -24,67 +60,27 @@ function App(props) {
                   className="input is-medium"
                   type="text"
                   placeholder="Enter a github repo URL"
+                  onChange={handleChangeInput}
                 />
               </div>
               <div className="column is-2">
-                <button className="button is-info is-outlined is-medium is-fullwidth">
+                <button 
+                  className="button is-info is-outlined is-medium is-fullwidth"
+                  onClick={() => runAudit()}
+                >
                   Run Audit
                 </button>
               </div>
             </div>
 
-            <div className="box" style={{ marginTop: 50 }}>
-              <div className="content">
-                <div className="columns">
-                  <div className="column">
-                    <h1 className="title has-text-centered">
-                      Score:
-                      <span
-                        className="tag is-success is-large is-rounded"
-                        style={{ marginLeft: 10 }}
-                      >
-                        90 / 100
-                      </span>
-                    </h1>
-                  </div>
-                  <div className="column">
-                    <h1 className="title has-text-centered">
-                      Result:
-                      <span
-                        className="tag is-success is-large is-rounded"
-                        style={{ marginLeft: 10 }}
-                      >
-                        LEGIT
-                      </span>
-                    </h1>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {!!responseData && <Score />}
           </div>
         </div>
       </section>
       <section className="hero">
         <div className="hero-body">
           <div className="container">
-            <table className="table is-fullwidth">
-              <thead>
-                <tr>
-                  <th>Parameter</th>
-                  <th>Value</th>
-                  <th>Score</th>
-                </tr>
-              </thead>
-              <tbody>
-                {params.map((item) => (
-                  <tr key={item.key}>
-                    <td>{item.key}</td>
-                    <td>30</td>
-                    <td>Good</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            {!!responseData && <DataTable data={responseData} />}
           </div>
         </div>
       </section>
@@ -158,12 +154,14 @@ const queries = gql`
   }
 `;
 
-export default graphql(queries, {
-  options: {
-    variables: {
-      owner: "raosan",
-      repo: "is-this-repo-legit"
-    }
-  }
-})(App);
+export default App
+
+// export default graphql(queries, {
+//   options: {
+//     variables: {
+//       owner: "raosan",
+//       repo: "is-this-repo-legit"
+//     }
+//   }
+// })(App);
 

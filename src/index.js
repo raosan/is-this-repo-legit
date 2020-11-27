@@ -7,7 +7,7 @@ import { HttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloProvider } from "react-apollo";
 
-const GITHUB_TOKEN = '86b2cf5f1426e2333599244ecab384abee1dce7b';
+const GITHUB_TOKEN = 'af5c5650ab0ea85dd34c84a1e0424a02bd62ae40';
 
 const client = new ApolloClient({
   link: new HttpLink({
