@@ -1,9 +1,14 @@
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
+
 import "./App.css";
 import "bulma/css/bulma.css";
 import Header from "./components/Header";
 import params from "./data/params";
 
-function App() {
+function App(props) {
+  console.log(props.data.repository);
+
   return (
     <div>
       <Header />
@@ -87,4 +92,78 @@ function App() {
   );
 }
 
-export default App;
+const queries = gql`
+  query(
+    $owner: String!
+    $repo: String!
+  ) {
+    repository(owner: $owner, name: $repo) {
+      createdAt
+        defaultBranchRef {
+        name
+        prefix
+      }
+      description
+      forkCount
+      hasProjectsEnabled
+      hasWikiEnabled
+      isArchived
+      isBlankIssuesEnabled
+      isDisabled
+      isEmpty
+      isFork
+      isInOrganization
+      isLocked
+      isMirror
+      isPrivate
+      isSecurityPolicyEnabled
+      isTemplate
+      isUserConfigurationRepository
+      mirrorUrl
+      name
+      nameWithOwner
+      openGraphImageUrl
+      stargazerCount
+      updatedAt
+      usesCustomOpenGraphImage
+      viewerCanAdminister
+      viewerCanCreateProjects
+      viewerCanSubscribe
+      viewerCanUpdateTopics
+      viewerDefaultCommitEmail
+      viewerDefaultMergeMethod
+      viewerHasStarred
+      viewerPossibleCommitEmails
+      open_issues: issues(states: OPEN) {
+        totalCount
+      }
+      closed_issues: issues(states: CLOSED) {
+        totalCount
+      }
+      open_pull_requests: pullRequests(states: OPEN) {
+        totalCount
+      }
+      merged_pull_requests: pullRequests(states: MERGED) {
+        totalCount
+      }
+      releases(first: 1, orderBy: {direction: DESC, field: CREATED_AT}) {
+        edges {
+            node {
+              name
+              publishedAt
+            }
+        }
+      }
+    }
+  }
+`;
+
+export default graphql(queries, {
+  options: {
+    variables: {
+      owner: "raosan",
+      repo: "is-this-repo-legit"
+    }
+  }
+})(App);
+
