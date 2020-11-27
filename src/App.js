@@ -52,24 +52,31 @@ function App() {
     if (!responseData) {
       return;
     }
+
+    const curDate = new Date();
+    const lastYear = curDate.setFullYear(curDate.getFullYear() - 1);
     
     // deprecated
     // - last PR mergedAt >1 year ago
     // - last release publishedAt >1 years ago
-    // - issues OPEN / CLOSED > 60% (?)
+    const updatedAt = new Date(responseData?.updatedAt)
+    if (
+      responseData.updatedAt &&
+      updatedAt < lastYear
+      ) {
+      newStatus = 'DEPRECATED'
+    }
     
     
     // normal
     // - last merged PR within past 1 year
     // - last release publishedAt within past 1 year    
-    const curDate = new Date(2012, 7, 25);
-    const lastYear = curDate.setFullYear(curDate.getFullYear() - 1);
     const publishedAt = new Date(responseData.releases?.edges?.node?.publishedAt)
     if (
       responseData.releases?.edges?.node?.publishedAt &&
       publishedAt > lastYear
       ) {
-      newStatus = 'GOOD'
+      newStatus = 'NORMAL'
     }
     
     const {
@@ -110,7 +117,7 @@ function App() {
       stargazerCount > 500 &&
       forkCount > 100 &&
       (issuePercentage < 30 || totalIssue > 200) &&
-      pullRequestPercentage < 10
+      pullRequestPercentage < 60
       ) {
       newStatus = 'AWESOME'
     }
