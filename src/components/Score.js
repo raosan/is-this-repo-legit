@@ -18,7 +18,7 @@ export default function score({status}) {
             <h1 className="title has-text-centered">
               Result:
               <span
-                className="tag is-success is-large is-rounded"
+                className={`tag is-large is-rounded ${status === 'AWESOME' ? 'is-success' : 'is-warning'}`}
                 style={{ marginLeft: 10 }}
               >
                 {status || '-'}
