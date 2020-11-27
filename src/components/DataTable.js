@@ -1,7 +1,7 @@
 import params from "../data/params";
 
 export default function dataTable({data}) {
-  console.log(data, 'data')
+  // console.log(data, 'data')
   return (
     <table className="table is-fullwidth">
       <thead>

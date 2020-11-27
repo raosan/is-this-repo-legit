@@ -50,7 +50,7 @@ function App() {
   useEffect(() => {
     setLoading(true)
 
-    let newStatus = 'NOT AWESOME'
+    let newStatus = 'NOT LEGIT'
 
     if (!responseData) {
       return;
@@ -90,7 +90,7 @@ function App() {
       issuePercentage < 30 &&
       pullRequestPercentage < 10
       ) {
-      newStatus = 'AWESOME'
+      newStatus = 'LEGIT'
     }
         
     // awesome
