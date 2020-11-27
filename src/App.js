@@ -96,6 +96,14 @@ function App() {
     // - issues OPEN / CLOSE < 30%
     // - PR OPEN / MERGED < 10%
     
+    if(
+      responseData?.stargazerCount > 500 &&
+      responseData?.forkCount > 90 &&
+      responseData?.merged_pull_requests?.totalCount > 10 &&
+      openPerMergedPR < 10
+    ) {
+      newStatus = 'AWESOME'
+    }
     
     setStatus(newStatus)
   }, [responseData])
