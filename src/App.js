@@ -76,13 +76,13 @@ function App() {
     // normal
     // - last merged PR within past 1 year
     // - last release publishedAt within past 1 year    
-    const publishedAt = new Date(responseData.releases?.edges?.node?.publishedAt)
-    if (
-      responseData.releases?.edges?.node?.publishedAt &&
-      publishedAt > lastYear
-      ) {
-      newStatus = 'NORMAL'
-    }
+    // const publishedAt = new Date(responseData.releases?.edges?.node?.publishedAt)
+    // if (
+    //   responseData.releases?.edges?.node?.publishedAt &&
+    //   publishedAt > lastYear
+    //   ) {
+    //   newStatus = 'NORMAL'
+    // }
     
     const {
       stargazerCount,
