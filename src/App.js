@@ -69,7 +69,7 @@ function App() {
       responseData.updatedAt &&
       updatedAt < lastYear
       ) {
-      newStatus = 'DEPRECATED'
+      newStatus = 'NOT LEGIT'
     }
     
     
