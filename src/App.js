@@ -52,7 +52,9 @@ function App() {
 
     let newStatus = 'NOT AWESOME'
 
-    // if (responseData)
+    if (!responseData) {
+      return;
+    }
     
     // deprecated
     // - last PR mergedAt >1 year ago
@@ -69,12 +71,28 @@ function App() {
     // - issues OPEN < 300 (?)
     // - issues OPEN / CLOSED < 60% (?)
     // - PR OPEN / MERGED < 10%
-    
-    
-    const openPR = responseData?.open_pull_requests?.totalCount || 1
-    const mergedPR = responseData?.merged_pull_requests?.totalCount || 1
-    const openPerMergedPR = openPR / mergedPR * 100
 
+    const {
+      stargazerCount,
+      open_issues,
+      closed_issues,
+      forkCount,
+      open_pull_requests,
+      merged_pull_requests
+    } = responseData;
+    
+    const issuePercentage = (open_issues?.totalCount * 100) / (open_issues?.totalCount + closed_issues?.totalCount)
+    const pullRequestPercentage = (open_pull_requests?.totalCount * 100) / (open_pull_requests?.totalCount + merged_pull_requests?.totalCount)
+    
+    if (
+      stargazerCount > 500 &&
+      forkCount > 100 &&
+      issuePercentage < 30 &&
+      pullRequestPercentage < 10
+      ) {
+      newStatus = 'AWESOME'
+    }
+        
     // awesome
     // - stars 500++
     // - fork 100++
