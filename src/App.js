@@ -65,13 +65,16 @@ function App() {
     // normal
     // - last merged PR within past 1 year
     // - last release publishedAt within past 1 year    
+    const curDate = new Date(2012, 7, 25);
+    const lastYear = curDate.setFullYear(curDate.getFullYear() - 1);
+    const publishedAt = new Date(responseData.releases?.edges?.node?.publishedAt)
+    if (
+      responseData.releases?.edges?.node?.publishedAt &&
+      publishedAt > lastYear
+      ) {
+      newStatus = 'NORMAL'
+    }
     
-    // good
-    // - 100++ stars
-    // - issues OPEN < 300 (?)
-    // - issues OPEN / CLOSED < 60% (?)
-    // - PR OPEN / MERGED < 10%
-
     const {
       stargazerCount,
       open_issues,
@@ -82,22 +85,38 @@ function App() {
     } = responseData;
     
     const issuePercentage = (open_issues?.totalCount * 100) / (open_issues?.totalCount + closed_issues?.totalCount)
+    const totalIssue = open_issues?.totalCount + closed_issues?.totalCount
     const pullRequestPercentage = (open_pull_requests?.totalCount * 100) / (open_pull_requests?.totalCount + merged_pull_requests?.totalCount)
-    
+
+    // good
+    // - 100++ stars
+    // - issues OPEN < 300 (?)
+    // - issues OPEN / CLOSED < 60% (?)
+    // - total issues OPEN + CLOSE > 20
+    // - PR OPEN / MERGED < 10%
     if (
-      stargazerCount > 500 &&
-      forkCount > 100 &&
-      issuePercentage < 30 &&
+      stargazerCount > 100 &&
+      open_issues?.totalCount < 300 &&
+      (issuePercentage < 60 || totalIssue > 20) &&
       pullRequestPercentage < 10
       ) {
-      newStatus = 'LEGIT'
+      newStatus = 'GOOD'
     }
-        
+    
     // awesome
     // - stars 500++
     // - fork 100++
     // - issues OPEN / CLOSE < 30%
+    // - total issues OPEN + CLOSE > 200
     // - PR OPEN / MERGED < 10%
+    if (
+      stargazerCount > 500 &&
+      forkCount > 100 &&
+      (issuePercentage < 30 || totalIssue > 200) &&
+      pullRequestPercentage < 10
+      ) {
+      newStatus = 'LEGIT'
+    }
     
     setStatus(newStatus)
     
