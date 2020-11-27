@@ -13,6 +13,7 @@ function App() {
   const [ownerText, setOwnerText] = useState('')
   const [repoText, setRepoText] = useState('')
   const [status, setStatus] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const response = useQuery(queries, {
     variables: {
@@ -27,6 +28,8 @@ function App() {
   }
 
   const runAudit = () => {
+    setLoading(true)
+
     const params = url.split('/')
     const githubUrlIdx = params.indexOf('github.com')
     
@@ -42,12 +45,14 @@ function App() {
       setOwnerText(owner)
       setRepoText(repo)
     }
+
+    setTimeout(() => setLoading(false), 500)
   }
 
   const responseData = response?.data?.repository || null
 
   useEffect(() => {
-    let newStatus = 'NOT AWESOME'
+    let newStatus = 'DEPRECATED'
 
     if (!responseData) {
       return;
@@ -119,10 +124,10 @@ function App() {
       (issuePercentage < 30 || totalIssue > 200) &&
       pullRequestPercentage < 60
       ) {
-      newStatus = 'AWESOME'
+      newStatus = 'LEGIT'
     }
     
-    setStatus(newStatus)
+    setStatus(newStatus)    
   }, [responseData])
 
   return (
@@ -153,6 +158,7 @@ function App() {
               </div>
             </div>
 
+            {loading && <div>Loading...</div>}
             {!!responseData && <Score status={status} />}
           </div>
         </div>
