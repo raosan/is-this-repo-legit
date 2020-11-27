@@ -8,15 +8,13 @@ export default function dataTable({data}) {
         <tr>
           <th>Parameter</th>
           <th>Value</th>
-          <th>Score</th>
         </tr>
       </thead>
       <tbody>
         {data && params.map((item) => (
           <tr key={item.key}>
             <td>{item.label}</td>
-            <td>{data[item.key]}</td>
-            <td>Good</td>
+            <td>{!!item.child ? data[item.key][item.child] : data[item.key]}</td>
           </tr>
         ))}
       </tbody>

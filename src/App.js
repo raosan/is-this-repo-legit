@@ -6,12 +6,13 @@ import "bulma/css/bulma.css";
 import Header from "./components/Header";
 import Score from "./components/Score";
 import DataTable from "./components/DataTable";
-import {useState } from "react";
+import {useEffect, useState } from "react";
 
 function App() {
   const [url, setUrl] = useState('')
   const [ownerText, setOwnerText] = useState('')
   const [repoText, setRepoText] = useState('')
+  const [status, setStatus] = useState('')
 
   const response = useQuery(queries, {
     variables: {
@@ -45,6 +46,43 @@ function App() {
 
   const responseData = response?.data?.repository || null
 
+  useEffect(() => {
+    // let newStatus = ''
+
+    // if (responseData)
+
+    // setStatus(newStatus)
+    
+    // deprecated
+    // - last PR mergedAt >1 year ago
+    // - last release publishedAt >1 years ago
+    // - issues OPEN / CLOSED > 60% (?)
+    
+    
+    // normal
+    // - last merged PR within past 1 year
+    // - last release publishedAt within past 1 year
+    
+    
+    // good
+    // - 100++ stars
+    // - issues OPEN < 300 (?)
+    // - issues OPEN / CLOSED < 60% (?)
+    // - PR OPEN / MERGED < 10%
+    
+    
+    
+    // Edited​[3:01 PM] M. Noor Syamsu
+        
+    // awesome
+    // - stars 500++
+    // - fork 100++
+    // - issues OPEN / CLOSE < 30%
+    // - PR OPEN / MERGED < 10%
+    
+    // Edited
+  }, [responseData])
+
   return (
     <div>
       <Header />
@@ -73,7 +111,7 @@ function App() {
               </div>
             </div>
 
-            {!!responseData && <Score />}
+            {!!responseData && <Score status={status} />}
           </div>
         </div>
       </section>

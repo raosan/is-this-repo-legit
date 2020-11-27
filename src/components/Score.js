@@ -1,9 +1,9 @@
-export default function score() {
+export default function score({status}) {
   return (
     <div className="box" style={{ marginTop: 50 }}>
       <div className="content">
         <div className="columns">
-          <div className="column">
+          {/* <div className="column">
             <h1 className="title has-text-centered">
               Score:
               <span
@@ -13,7 +13,7 @@ export default function score() {
                 90 / 100
               </span>
             </h1>
-          </div>
+          </div> */}
           <div className="column">
             <h1 className="title has-text-centered">
               Result:
@@ -21,7 +21,7 @@ export default function score() {
                 className="tag is-success is-large is-rounded"
                 style={{ marginLeft: 10 }}
               >
-                LEGIT
+                {status || '-'}
               </span>
             </h1>
           </div>
