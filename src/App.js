@@ -93,12 +93,12 @@ function App() {
     // - issues OPEN < 300 (?)
     // - issues OPEN / CLOSED < 60% (?)
     // - total issues OPEN + CLOSE > 20
-    // - PR OPEN / MERGED < 10%
+    // - PR OPEN / MERGED < 60%
     if (
       stargazerCount > 100 &&
       open_issues?.totalCount < 300 &&
       (issuePercentage < 60 || totalIssue > 20) &&
-      pullRequestPercentage < 10
+      pullRequestPercentage < 60
       ) {
       newStatus = 'GOOD'
     }
