@@ -81,6 +81,14 @@ const queries = gql`
       merged_pull_requests: pullRequests(states: MERGED) {
         totalCount
       }
+      releases(first: 1, orderBy: {direction: DESC, field: CREATED_AT}) {
+        edges {
+            node {
+              name
+              publishedAt
+            }
+        }
+      }
     }
   }
 `;
