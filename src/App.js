@@ -69,7 +69,7 @@ function App() {
     
     
     
-    if(responseData.stargazerCount > 500) {
+    if(responseData?.stargazerCount > 500) {
       newStatus = 'AWESOME'
     }
         
