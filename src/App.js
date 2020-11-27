@@ -68,17 +68,24 @@ function App() {
     // - PR OPEN / MERGED < 10%
     
     
-    
-    if(responseData?.stargazerCount > 500) {
-      newStatus = 'AWESOME'
-    }
-        
+    const openPR = responseData?.open_pull_requests?.totalCount || 1
+    const mergedPR = responseData?.merged_pull_requests?.totalCount || 1
+    const openPerMergedPR = openPR / mergedPR * 100
+
     // awesome
     // - stars 500++
     // - fork 100++
     // - issues OPEN / CLOSE < 30%
     // - PR OPEN / MERGED < 10%
     
+    if(
+      responseData?.stargazerCount > 500 &&
+      responseData?.forkCount > 90 &&
+      responseData?.merged_pull_requests?.totalCount > 10 &&
+      openPerMergedPR < 10
+    ) {
+      newStatus = 'AWESOME'
+    }
     
     setStatus(newStatus)
   }, [responseData])
