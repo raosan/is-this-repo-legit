@@ -13,6 +13,7 @@ function App() {
   const [ownerText, setOwnerText] = useState('')
   const [repoText, setRepoText] = useState('')
   const [status, setStatus] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const response = useQuery(queries, {
     variables: {
@@ -47,6 +48,8 @@ function App() {
   const responseData = response?.data?.repository || null
 
   useEffect(() => {
+    setLoading(true)
+
     let newStatus = 'NOT AWESOME'
 
     // if (responseData)
@@ -88,6 +91,9 @@ function App() {
     }
     
     setStatus(newStatus)
+    
+    setTimeout(() => setLoading(false), 500)
+    
   }, [responseData])
 
   return (
@@ -118,6 +124,7 @@ function App() {
               </div>
             </div>
 
+            {loading && <div>Loading...</div>}
             {!!responseData && <Score status={status} />}
           </div>
         </div>
