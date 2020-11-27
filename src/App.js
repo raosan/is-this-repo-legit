@@ -47,11 +47,9 @@ function App() {
   const responseData = response?.data?.repository || null
 
   useEffect(() => {
-    // let newStatus = ''
+    let newStatus = 'NOT AWESOME'
 
     // if (responseData)
-
-    // setStatus(newStatus)
     
     // deprecated
     // - last PR mergedAt >1 year ago
@@ -61,8 +59,7 @@ function App() {
     
     // normal
     // - last merged PR within past 1 year
-    // - last release publishedAt within past 1 year
-    
+    // - last release publishedAt within past 1 year    
     
     // good
     // - 100++ stars
@@ -72,7 +69,9 @@ function App() {
     
     
     
-    // Edited​[3:01 PM] M. Noor Syamsu
+    if(responseData.stargazerCount > 500) {
+      newStatus = 'AWESOME'
+    }
         
     // awesome
     // - stars 500++
@@ -80,7 +79,8 @@ function App() {
     // - issues OPEN / CLOSE < 30%
     // - PR OPEN / MERGED < 10%
     
-    // Edited
+    
+    setStatus(newStatus)
   }, [responseData])
 
   return (
