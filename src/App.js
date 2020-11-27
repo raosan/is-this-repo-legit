@@ -77,7 +77,7 @@ function App(props) {
               </thead>
               <tbody>
                 {params.map((item) => (
-                  <tr>
+                  <tr key={item.key}>
                     <td>{item.key}</td>
                     <td>30</td>
                     <td>Good</td>
