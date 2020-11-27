@@ -28,6 +28,8 @@ function App() {
   }
 
   const runAudit = () => {
+    setLoading(true)
+
     const params = url.split('/')
     const githubUrlIdx = params.indexOf('github.com')
     
@@ -43,14 +45,14 @@ function App() {
       setOwnerText(owner)
       setRepoText(repo)
     }
+
+    setTimeout(() => setLoading(false), 500)
   }
 
   const responseData = response?.data?.repository || null
 
   useEffect(() => {
-    setLoading(true)
-
-    let newStatus = 'NOT LEGIT'
+    let newStatus = 'DEPRECATED'
 
     if (!responseData) {
       return;
@@ -118,10 +120,7 @@ function App() {
       newStatus = 'LEGIT'
     }
     
-    setStatus(newStatus)
-    
-    setTimeout(() => setLoading(false), 500)
-    
+    setStatus(newStatus)    
   }, [responseData])
 
   return (
